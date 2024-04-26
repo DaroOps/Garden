@@ -1,0 +1,17 @@
+{
+  "name": "infusioncodigocafeinado",
+  "version": "1.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "dev" : "node ./js/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "json-server": "^1.0.0-alpha.23"
+  }
+}
