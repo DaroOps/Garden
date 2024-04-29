@@ -23,7 +23,7 @@ export const getAllClientsByRegionAndSalesManagerCodes = async (clientsRegion = 
     let clients = await res.json();
     let dataUpdate = []
     clients.forEach(val => {
-        if (val.code_employee_sales_manager == 11 || val.code_employee_sales_manager == 30) {
+        if (val.code_employee_sales_manager == employeeID1 || val.code_employee_sales_manager == employeeID2) {
             dataUpdate.push({
                 nombre: val.client_name,
                 region: val.region,
@@ -34,3 +34,16 @@ export const getAllClientsByRegionAndSalesManagerCodes = async (clientsRegion = 
     return dataUpdate;
 }
 
+
+export const getClientsAndEmployeesNames = async () => {
+    const res = await fetch("http://localhost:5501/clients");
+    const clients = await res.json();
+  
+    for (const client of clients) {
+      const employee = await getEmployByCode(client.code_employee_sales_manager);
+      client.name_employee = `${employee.name}`;
+      client.lastnames_employee = `${employee.lastname1} ${employee.lastname2}`;
+    }
+  
+    return clients;
+  };
