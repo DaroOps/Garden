@@ -1,7 +1,7 @@
 import {reports} from "./modules/reports/reports.js" 
 
 const createReport = (report) => {
-  let queryReportDetails = document?.querySelector("#report__details");
+  let queryReportDetails = document.querySelector("#report__details");
 
   let fragment = ` <details id="queryDetails${report.queryID}">
                         <summary>
@@ -14,7 +14,9 @@ const createReport = (report) => {
                      </details>
                      `;
 
-  queryReportDetails.innerHTML += fragment;
+  if(queryReportDetails){
+    queryReportDetails.innerHTML += fragment;
+  }
 
   generateInfo(report);
 };
@@ -22,14 +24,16 @@ const createReport = (report) => {
 const generateInfo = (report) => {
   const queryDetails = document?.querySelector(`#queryDetails${report.queryID}`);
 
-  queryDetails.addEventListener("click", async () => {
-    let [, report__container] = queryDetails.children;
-
-    if (!report__container.innerHTML) {
-      let data = await report.getData();
-      report__container.innerHTML = report.generateInfo(data);
-    }
-  });
+  if(queryDetails){
+    queryDetails.addEventListener("click", async () => {
+      let [, report__container] = queryDetails.children;
+  
+      if (!report__container.innerHTML) {
+        let data = await report.getData();
+        report__container.innerHTML = report.generateInfo(data);
+      }
+    });
+  }
 };
 
 
