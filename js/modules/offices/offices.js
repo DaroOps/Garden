@@ -1,4 +1,4 @@
-import {getSalesRepsWithFruitPurchases} from "../helpers/helpers.js"
+import {getSalesRepsWithFruitPurchases} from "../helper.js"
 
 // import {  } from `./clients.js`;
 // import {  } from `./employees.js`;

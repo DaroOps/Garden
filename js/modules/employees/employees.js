@@ -1,7 +1,24 @@
-import { getOfficesByCode, getClientByEmployeeCode } from "../helpers/helpers.js";
+import { getOfficesByCode, getClientByEmployeeCode } from "../helper.js";
 
 const port = 5002
 const endpoint = `http://localhost:${port}/employees`
+
+
+export const getCEOInformation = async () => {
+    const employees = await getAllEmployees();
+    const ceoEmployee = employees.find(employee => employee.code_boss === null); 
+    if (ceoEmployee) {
+        return {
+            position: ceoEmployee.position,
+            name: ceoEmployee.name,
+            lastnames: `${ceoEmployee.lastname1} ${ceoEmployee.lastname2}`,
+            email: ceoEmployee.email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)[0]
+        };
+    } else {
+        return "ERROR 404: CEO not found!";
+    }
+};
+
 
 
 export const getEmployByCode = async (code) => {
@@ -32,8 +49,8 @@ export const getEmployeeByOfficeCode = async (code) => {
 export const getAllNameSurnamesAndEmailInCargeOfBossSeven = async () => {
     const employees = await getEmployByBossCode(7);
     return employees.map(({ name, lastname1, lastname2, email }) => ({
-        nombre: name,
-        apellidos: `${lastname1} ${lastname2}`,
+        name: name,
+        lastnames: `${lastname1} ${lastname2}`,
         email: email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)[0]
     }));
 };
@@ -41,21 +58,27 @@ export const getAllNameSurnamesAndEmailInCargeOfBossSeven = async () => {
 export const getBossesFullnameAndEmail = async () => {
     const employees = await getEmployByCode();
     return employees.filter(({ code_boss }) => code_boss === null).map(({ position, name, lastname1, lastname2, email }) => ({
-        puesto: position,
-        nombre: name,
-        apellidos: `${lastname1} ${lastname2}`,
+        position: position,
+        name: name,
+        lastnames: `${lastname1} ${lastname2}`,
         email: email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)[0]
     }));
 };
 
 export const getAllEmployees = async () => {
-    const employees = await getEmployByCode("position_ne=Representante Ventas");
-    return employees.map(({ name, lastname1, lastname2, position }) => ({
-        nombre: name,
-        apellidos: `${lastname1} ${lastname2}`,
-        puesto: position
+    const res = await fetch(`${endpoint}`);
+    return await res.json();
+};
+
+export const getAllEmployeesNotSalesRepresentative = async () => {
+    const employees = await getAllEmployees();
+    return employees.filter(employee => employee.position !== "Representante Ventas").map(({ name, lastname1, lastname2, position }) => ({
+        name: name,
+        lastnames: `${lastname1} ${lastname2}`,
+        position: position
     }));
 };
+
 
 const getEmployeeData = async (employee) => {
     const { extension, email, code_office, position, id, ...employeeData } = employee;

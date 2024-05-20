@@ -1,5 +1,5 @@
 import { getEmployByCode, getOfficesByCode, getPaymentByClientCode, 
-    getRequestByCodeClient, getAllLateRequest} from "../helpers/helpers.js"
+    getRequestByCodeClient, getAllLateRequest} from "../helper.js"
 
 const port = 5001
 const endpoint = `http://localhost:${port}/clients`

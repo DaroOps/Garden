@@ -1,4 +1,4 @@
-import { getRequestDetailsByProductCode, getGamaByName  } from "../helpers/helpers.js";
+import { getRequestDetailsByProductCode, getGamaByName  } from "../helper.js";
 
 const port = 5006
 const endpoint = `http://localhost:${port}/products`
