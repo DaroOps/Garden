@@ -86,45 +86,56 @@ const getEmployeeData = async (employee) => {
 };
 
 export const getEmployeesWithBoss = async () => {
-    const employees = await getEmployByCode();
-    const bosses = [];
-
-    for (const employee of employees) {
-        if (employee.code_boss !== null) {
-            const existingBoss = bosses.find(boss => boss.boss === employee.code_boss);
-            const employeeData = await getEmployeeData(employee);
-
+    let res = await fetch(`${endpoint}`)
+    let employees = await res.json()
+    let bosses = []
+    for (let i = 0; i < employees.length; i++) {
+        if (employees[i].code_boss !== null) {
+            let existingBoss = bosses.find(boss => boss.boss === employees[i].code_boss);
             if (existingBoss) {
-                existingBoss.employees.push(employeeData.name);
+                existingBoss.employees.push(employees[i].name);
             } else {
                 bosses.push({
-                    boss: employee.code_boss,
-                    nameBoss: await getNameByEmployeeCode(employee.code_boss),
-                    employees: [employeeData.name]
+                    boss: employees[i].code_boss,
+                    nameBoss: await getNameByEmployeeCode(employees[i].code_boss),
+                    employees: [employees[i].name]
                 });
             }
         }
     }
+    let bossesWithoutCode = bosses.map(boss => ({ nameBoss: boss.nameBoss, employees: boss.employees }));
+    return bossesWithoutCode;
+}
 
-    return bosses.map(({ nameBoss, employees }) => ({ nameBoss, employees }));
-};
+  export const getEmployeesWithBosses = async () => {
+    let res = await fetch(`${endpoint}`)
+    let employees = await res.json()
+    let bosses = []
 
-export const getEmployeesWithBosses = async () => {
-    const employees = await getEmployByCode();
-    const bosses = [];
-
-    for (const employee of employees) {
-        const employeeData = await getEmployeeData(employee);
-        const jefeDelJefe = employeeData.code_boss === null ? 'No tiene' : await getNameByEmployeeCode(await getEmployByCode2(employeeData.code_boss).code_boss);
-        bosses.push({
-            NombreDelTrabajador: employeeData.name,
-            NombreDelJefe: await getNameByEmployeeCode(employeeData.code_boss),
-            jefeDelJefe
-        });
+    for (let i = 0; i < employees.length; i++) {
+        let jefeDelJefe = 'No tiene'
+        let {
+            extension,
+            email,
+            code_office,
+            position,
+            id,
+            ...employeeData
+        } = employees[i]
+        if (!(employeeData.code_boss == null)) {
+            let dataBoss = await getEmployByCode2(employeeData.code_boss);
+            if (dataBoss.code_boss) {
+                jefeDelJefe = await getNameByEmployeeCode(dataBoss.code_boss)
+            }
+            bosses.push({
+                NombreDelTrabajador: employeeData.name,
+                NombreDelJefe: await getNameByEmployeeCode(employeeData.code_boss),
+                jefeDelJefe
+            })
+        }
     }
-
-    return bosses;
-};
+    return bosses
+}
 
 export const getEmployeesWithoutOffice = async () => {
     const employees = await getEmployByCode();

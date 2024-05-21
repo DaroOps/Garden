@@ -15,7 +15,6 @@ export const getAllStatus = async () => {
     const res = await fetch(`${endpoint}`);
     const data = await res.json();
     const uniqueStatus = [...new Set(data.map(request => request.status))];
-    
     const statusObject = {};
     uniqueStatus.forEach((item, index) => {
         statusObject[index] = item;
@@ -32,14 +31,13 @@ export const getClientsRequestByYear = async (year = 2008) => {
 };
 
 export const getAllLateRequest = async () => {
-    const res = await fetch(`${endpoint}?status=Entregado`);
+    const res = await fetch(`${endpoint}`);
     const data = await res.json();
-
     return data.filter(request => {
         if (!request?.date_delivery || !request?.date_wait) {
             return false;
         }
-
+        
         const [deliveryYear, deliveryMonth, deliveryDay] = request.date_delivery.split('-');
         const [waitYear, waitMonth, waitDay] = request.date_wait.split('-');
 

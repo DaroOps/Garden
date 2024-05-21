@@ -57,7 +57,13 @@ export const getAllPaymentStatus = async () => {
   const res = await fetch(`${endpoint}`);
   const data = await res.json();
   const paymentTypes = new Set(data.map((payment) => payment.payment));
-  return [...paymentTypes].sort();
+  // return [...paymentTypes].sort();
+  const paymentObj = [];
+  paymentTypes.forEach((item, index) =>{
+      paymentObj.push({type: item})
+  })
+
+  return paymentObj
 };
 
 export const getPaymentByClientCode = async (clientCode) => {
