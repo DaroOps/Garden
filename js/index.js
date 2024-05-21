@@ -140,10 +140,70 @@ eventBus.subscribe('multi-i10', async () => {
     eventBus.publish('multi-i10-d', data);
 });
 
+eventBus.subscribe('multi-i11', async () => {
+    const data = await getClientsAndRepresentativesWithOfficeCity();
+    eventBus.publish('multi-i11-d', data);
+});
 
+eventBus.subscribe('multi-e1', async () => {
+    const data = await getClientsWhoMadePaymentsAndTheyCity();
+    eventBus.publish('multi-e1-d', data);
+});
 
+eventBus.subscribe('multi-e2', async () => {
+    const data = await getClientsAndRepresentativesWithOfficeCity();
+    eventBus.publish('multi-e2-d', data);
+});
 
+eventBus.subscribe('multi-e3', async () => {
+    const data = await getClientsWhoMadePaymentsAndTheyCity();
+    eventBus.publish('multi-e3-d', data);
+});
 
+eventBus.subscribe('multi-e4', async () => {
+    const data = await getClientsAndEmployeesNames();
+    eventBus.publish('multi-e4-d', data);
+});
+
+eventBus.subscribe('multi-e5', async () => {
+    const data = await getClientsAndEmployeesNames();
+    eventBus.publish('multi-e5-d', data);
+});
+
+eventBus.subscribe('multi-e6', async () => {
+    const data = await getClientsAndEmployeesNames();
+    eventBus.publish('multi-e6-d', data);
+});
+
+eventBus.subscribe('multi-e7', async () => {
+    const data = await getClientsAndEmployeesNames();
+    eventBus.publish('multi-e7-d', data);
+});
+
+eventBus.subscribe('multi-e8', async () => {
+    const data = await getProductsWithGammaOrnamentales();
+    eventBus.publish('multi-e8-d', data);
+});
+
+eventBus.subscribe('multi-e9', async () => {
+    const data = await getProductsWithGammaOrnamentales();
+    eventBus.publish('multi-e9-d', data);
+});
+
+eventBus.subscribe('multi-e10', async () => {
+    const data = await getClientsAndEmployeesNames();
+    eventBus.publish('multi-e10-d', data);
+});
+
+eventBus.subscribe('multi-e11', async () => {
+    const data = await getClientsWhoMadePaymentsAndTheyCity();
+    eventBus.publish('multi-e11-d', data);
+});
+
+eventBus.subscribe('multi-e12', async () => {
+    const data = await getClientsAndEmployeesNames();
+    eventBus.publish('multi-e12-d', data);
+});
 
 
 let btn = document.querySelectorAll("button")
@@ -166,6 +226,10 @@ btn.forEach(val => {
               <drop-card owner="Garden" title="6.(multi-i) List the address of the offices that have clients in Fuenlabrada." category="Client" data-event-name="multi-i6"></drop-card>
               <drop-card owner="Garden" title="7.(multi-i) Returns the name of the clients and the name of their representatives along with the city of the office to which the representative belongs." category="Client" data-event-name="multi-i7"></drop-card>
               <drop-card owner="Garden" title="10.(multi-i) Returns the name of customers to whom an order has not been delivered on time." category="Client" data-event-name="multi-i10"></drop-card>
+              <drop-card owner="Garden" title="1.(multi-e) Returns a list showing only customers who have not made any payments." category="Client" data-event-name="multi-e1"></drop-card>
+              <drop-card owner="Garden" title="2.(multi-e) Returns a list showing only customers who have not placed any orders." category="Client" data-event-name="multi-e2"></drop-card>
+              <drop-card owner="Garden" title="3.(multi-e) Returns a list showing the customers who have not made any payments and those who have not placed any orders." category="Client" data-event-name="multi-e3"></drop-card>
+              <drop-card owner="Garden" title="11.(multi-e) Returns a list of customers who have placed an order but have not made any payment." category="Client" data-event-name="multi-e11"></drop-card>
               
               `
         }
@@ -176,10 +240,15 @@ btn.forEach(val => {
                 <drop-card owner="Garden" title="5.(single) Returns a list with the first name, last name and position of those employees who are not sales representatives." category="Employee" data-event-name="single5"></drop-card>
                 <drop-card owner="Garden" title="8.(multi-i) Returns a list with the names of the employees along with the names of their bosses." category="Employee" data-event-name="multi-i8"></drop-card>
                 <drop-card owner="Garden" title="9.(multi-i) Returns a list showing the name of each employee, the name of their boss, and the name of their boss's boss." category="Employee" data-event-name="multi-i9"></drop-card>
-
+                <drop-card owner="Garden" title="11.(multi-i) Returns a list of the different product ranges that each customer has purchased." category="Product" data-event-name="multi-i11"></drop-card>
+                <drop-card owner="Garden" title="4.(multi-e) Returns a list showing only employees who do not have an associated office." category="Employee" data-event-name="multi-e4"></drop-card>
+                <drop-card owner="Garden" title="6.(multi-e) Returns a list that shows only the employees who do not have an associated client along with the data of the office where they work." category="Employee" data-event-name="multi-e6"></drop-card>
+                <drop-card owner="Garden" title="7.(multi-e) Returns a list showing employees who do not have an associated office and those who do not have an associated client." category="Employee" data-event-name="multi-e7"></drop-card>
+                <drop-card owner="Garden" title="10.(multi-e) Returns the offices where none of the employees who have been the sales representatives of a client who has made the purchase of a product from the Frutales range work.." category="Employee" data-event-name="multi-e10"></drop-card>
+                <drop-card owner="Garden" title="12.(multi-e) Returns a list with the data of employees who do not have associated clients and the name of their associated boss." category="Employee" data-event-name="multi-e12"></drop-card>
               `;
         }
-
+        
         if (e.target.innerHTML == "offices") {
             report__details.innerHTML = /*html*/`
             <drop-card owner="Garden" title="1.(single) Returns a list with the office code and the city where there are offices" category="Office" data-event-name="single1"></drop-card>
@@ -197,24 +266,14 @@ btn.forEach(val => {
               `;
         }
 
-
-
-        if (e.target.innerHTML == "gama") {
-            report__details.innerHTML = /*html*/`
-              `;
-        }
-
         if (e.target.innerHTML == "product") {
             report__details.innerHTML = /*html*/`
             <drop-card owner="Garden" title="15.(single) Returns a list with all the products that belong to the Ornamental range and that have more than 100 units in stock. The list must be ordered by their sales price, showing the highest prices first." category="Product" data-event-name="single15"></drop-card>
-            <drop-card owner="Garden" title="11.(multi-i) Returns a list of the different product ranges that each customer has purchased." category="Product" data-event-name="multi-i11"></drop-card>
-              `;
+            <drop-card owner="Garden" title="8.(multi-e) Returns a list of products that have never appeared in an order." category="Product" data-event-name="multi-e8"></drop-card>
+            <drop-card owner="Garden" title="9.(multi-e) Returns a list of products that have never appeared in an order." category="Product" data-event-name="multi-e9"></drop-card>
+            `;
         }
 
-        if (e.target.innerHTML == "request details") {
-            report__details.innerHTML = /*html*/`
-              `;
-        }
         if (e.target.innerHTML == "requests") {
             report__details.innerHTML = /*html*/`
        
